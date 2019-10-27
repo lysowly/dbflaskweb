@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 from flask import Flask,render_template,request,redirect,url_for,session,g
-from models import User
+from models import User,MovieList
 from exts import db
 from sqlalchemy import or_
 
@@ -10,7 +10,6 @@ import config
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
-
 
 @app.route('/')
 def index():
@@ -84,6 +83,32 @@ def logout():
 
 # before_request -> 视图函数 -> context_processor
 
+@app.route('/addmovie/')
+def addmovie():
+    hdxs = {
+    'rating':['9.6', '50'],
+    'rank':1,
+    'cover_url':'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2354179225.webp',
+    'is_playable':False,
+    'id':5133063,
+    'types':['喜剧'],
+    'regions':['英国'],
+    'title':'憨豆先生精选辑',
+    'url':'https://movie.douban.com/subject/5133063/',
+    'release_date':'1997',
+    'actor_count':8,
+    'vote_count':3554,
+    'score':9.6,
+    'actors':['罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'],
+    'is_watched':False
+    }
+
+    movielist01 = MovieList(**hdxs)
+    db.session.add(movielist01)
+    db.session.commit()
+    return 'a'
+
+
 if __name__ == '__main__':
     # pass
-    app.run(debug=True,port=9000)
+    app.run(debug=True,port=7002)

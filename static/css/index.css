@@ -1,41 +1,65 @@
 
-ul.question-list-group{
+ul.movie-list-group{
     list-style: none;
     padding-left: 0;
 }
 
-ul.question-list-group li{
+ul.movie-list-group li{
     border-bottom: 1px solid #eee;
     overflow: hidden;
     padding: 15px 0;
 }
 
 .avatar-group{
-    width: 38px;
+    width: 125px;
     height: 100%;
     float: left;
 }
 
 .avatar-group .avatar{
-    width: 38px;
-    height: 38px;
+    width: 125px;
+    height: 100%;
 }
 
-.question-group{
+.movie-group{
     float: left;
-    width: 660px;
+    width: 560px;
     margin-left: 10px;
 }
 
-.question-title a{
+.movie-title a{
     color: #259;
     font-weight: 900;
 }
 
-.question-info{
+.movie-title-rank{
+    width: 560px;
+    height: 30px;
     text-align: right;
 }
 
-.question-info .question-author{
+.movie-title{
+    display: inline-block;
+    max-width: 70%;
+    float: left;
+    font-size: 14px;
+    }
+
+.rank-num{
+    color: #5c5c5c;
+    float: right;
+}
+
+.movie-content{
+    width: 100%;
+    height:100%;
+}
+
+.movie-info{
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.movie-info .movie-author{
     margin-right:20px;
 }
