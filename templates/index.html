@@ -11,11 +11,11 @@
             {% for movie in movies %}
                 <li>
                     <div class="avatar-group">
-                        <img src="{{ url_for('static',filename='movieimages/p449524516.webp') }}" alt="" class="avatar">
+                        <img src="{{ url_for('static',filename = fun(movie.cover_url) ) }}" alt="" class="avatar">
                     </div>
                     <div class="movie-group">
                         <div class="movie-title-rank">
-                            <span class="movie-title"><a href="#">{{ movie.title}}</a></span>
+                            <span class="movie-title"><a href="{{ movie.url }}">{{ movie.title}}</a></span>
                             <span class="rank-num">{{ movie.rank }}</span>
                         </div>
                         <div class="movie-content">
@@ -25,7 +25,7 @@
                                     <span>{{ movie.types }}</span>
                                     <span>{{ movie.release_date }}</span>
                                 </p>
-                                <span>主要演员：{{ movie.actors }}</span>
+                                <span>主要演员：{{ fun2(movie.actors) }}</span>
                                 <span></span>
                             </p>
                         </div>

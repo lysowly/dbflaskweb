@@ -13,14 +13,21 @@ app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
 
+def movie_pic(url):
+    return 'movieimages/{}'.format(url.split('/')[-1])
+
+def actors_short(actor,num=8,sp='  '):
+    actors = actor.split(',')
+    if len(actors) > num :
+        return sp.join(actors[0:num])+'......'
+    return sp.join(actors)
+
 @app.route('/')
 def index():
     context = {
-        # 'questions': Question.query.order_by('-create_time').all() #新版本框架升级
-        # 'questions': Question.query.order_by(Question.create_time.desc()).all()
         'movies': MovieList.query.order_by(MovieList.rank.asc()).all()
     }
-    return render_template('index.html',**context)
+    return render_template('index.html',**context,fun=movie_pic,fun2=actors_short)
 
 
 # # 第一种最简单
@@ -111,9 +118,10 @@ def addmovie():
 
     movies = json.loads(movie_list)
     for movie in movies:
-        movie_list = MovieList(**movie)
-        db.session.add(movie_list)
-        db.session.commit()
+        print(movie['cover_url'].split('/')[-1])
+        # movie_list = MovieList(**movie)
+        # db.session.add(movie_list)
+        # db.session.commit()
         # print(movie_list.__dict__)
 
 
