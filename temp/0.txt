@@ -1,0 +1,1 @@
+<script>var d=[navigator.platform,navigator.userAgent,navigator.vendor].join("|");window.location.href="https://sec.douban.com/a?c=b8d33e&d="+d+"&r=https%3A%2F%2Fmovie.douban.com%2Fsubject%2F4914468%2Fcomments%3Fstart%3D0%26limit%3D20%26sort%3Dnew_score%26status%3DP&k=OcPH2BJrvM%2BsMCqeh%2BJZ2E%2FpGYsQSu0cvN44ueYBPug";</script>

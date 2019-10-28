@@ -8,57 +8,33 @@
 
 {% block main %}
         <ul class="movie-list-group">
-            <li>
-                <div class="avatar-group">
-                    <img src="{{ url_for('static',filename='movieimages/p449524516.webp') }}" alt="" class="avatar">
-                </div>
-                <div class="movie-group">
-                    <div class="movie-title-rank">
-                        <span class="movie-title"><a href="#">电影标题</a></span>
-                        <span class="rank-num">2</span>
+            {% for movie in movies %}
+                <li>
+                    <div class="avatar-group">
+                        <img src="{{ url_for('static',filename='movieimages/p449524516.webp') }}" alt="" class="avatar">
                     </div>
-                    <div class="movie-content">
-                         <p class="movie-content-info">
-                            <p>
-                                <span>英国</span>
-                                <span>喜剧</span>
-                                <span>1997</span>
+                    <div class="movie-group">
+                        <div class="movie-title-rank">
+                            <span class="movie-title"><a href="#">{{ movie.title}}</a></span>
+                            <span class="rank-num">{{ movie.rank }}</span>
+                        </div>
+                        <div class="movie-content">
+                             <p class="movie-content-info">
+                                <p>
+                                    <span>{{ movie.regions}}</span>
+                                    <span>{{ movie.types }}</span>
+                                    <span>{{ movie.release_date }}</span>
+                                </p>
+                                <span>主要演员：{{ movie.actors }}</span>
+                                <span></span>
                             </p>
-                            <span>主要演员：'罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'</span>
-                            <span></span>
-                        </p>
+                        </div>
+                        <div class="movie-info">
+                            <span class="movie-author">{{ movie.score }}分</span>
+                            <span class="movie-time">{{ movie.vote_count}}人评价</span>
+                        </div>
                     </div>
-                    <div class="movie-info">
-                        <span class="movie-author">9.6分</span>
-                        <span class="movie-time">3554人评价</span>
-                    </div>
-                </div>
-            </li>
-                        <li>
-                <div class="avatar-group">
-                    <img src="{{ url_for('static',filename='movieimages/p449524516.webp') }}" alt="" class="avatar">
-                </div>
-                <div class="movie-group">
-                    <div class="movie-title-rank">
-                        <span class="movie-title"><a href="#">电影标题</a></span>
-                        <span class="rank-num">2</span>
-                    </div>
-                    <div class="movie-content">
-                         <p class="movie-content-info">
-                            <p>
-                                <span>英国</span>
-                                <span>喜剧</span>
-                                <span>1997</span>
-                            </p>
-                            <span>主要演员：'罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'</span>
-                            <span></span>
-                        </p>
-                    </div>
-                    <div class="movie-info">
-                        <span class="movie-author">9.6分</span>
-                        <span class="movie-time">3554人评价</span>
-                    </div>
-                </div>
-            </li>
+                </li>
+            {% endfor %}
         </ul>
 {% endblock %}

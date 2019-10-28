@@ -1,5 +1,7 @@
 #encoding: utf-8
 
+import json
+
 from flask import Flask,render_template,request,redirect,url_for,session,g
 from models import User,MovieList
 from exts import db
@@ -16,8 +18,10 @@ def index():
     context = {
         # 'questions': Question.query.order_by('-create_time').all() #新版本框架升级
         # 'questions': Question.query.order_by(Question.create_time.desc()).all()
+        'movies': MovieList.query.order_by(MovieList.rank.asc()).all()
     }
     return render_template('index.html',**context)
+
 
 # # 第一种最简单
 # db.session.query(User).order_by('id desc').all()
@@ -102,13 +106,25 @@ def addmovie():
     'actors':['罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'],
     'is_watched':False
     }
+    with open('temp/movielist.txt','r',encoding='utf8') as f:
+        movie_list = f.read()
 
-    movielist01 = MovieList(**hdxs)
-    db.session.add(movielist01)
-    db.session.commit()
+    movies = json.loads(movie_list)
+    for movie in movies:
+        movie_list = MovieList(**movie)
+        db.session.add(movie_list)
+        db.session.commit()
+        # print(movie_list.__dict__)
+
+
+
+
+    # movielist01 = MovieList(**hdxs)
+    # db.session.add(movielist01)
+    # db.session.commit()
     return 'a'
 
 
 if __name__ == '__main__':
     # pass
-    app.run(debug=True,port=7002)
+    app.run(debug=True,port=7000)

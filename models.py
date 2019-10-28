@@ -51,7 +51,7 @@ class MovieList(db.Model):
     rank = db.Column(db.Integer, nullable=False)
     cover_url = db.Column(db.String(100), nullable=False)
     is_playable = db.Column(db.Boolean, nullable=False)
-    id = db.Column(db.Integer,primary_key=True,autoincrement=False)
+    id = db.Column(db.String(50),primary_key=True,autoincrement=False)
     types = db.Column(db.String(100),nullable=False)
     regions = db.Column(db.String(100),nullable=False)
     title = db.Column(db.String(100),nullable=False)
@@ -60,7 +60,7 @@ class MovieList(db.Model):
     actor_count = db.Column(db.String(100),nullable=False)
     vote_count = db.Column(db.String(100),nullable=False)
     score = db.Column(db.String(100),nullable=False)
-    actors = db.Column(db.String(100),nullable=False)
+    actors = db.Column(db.String(1500),nullable=False)
     is_watched = db.Column(db.Boolean,nullable=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
 
@@ -84,7 +84,7 @@ class MovieList(db.Model):
 
 
         self.rating = self.listcover(rating)
-        self.rank = int(rank)
+        self.rank = rank
         self.cover_url = cover_url
         self.is_playable = is_playable
         self.id = int(id)
@@ -92,9 +92,9 @@ class MovieList(db.Model):
         self.regions = self.listcover(regions)
         self.title = title
         self.url = url
-        self.release_date = release_date
-        self.actor_count = actor_count
-        self.vote_count = vote_count
+        self.release_date = str(release_date)
+        self.actor_count = str(actor_count)
+        self.vote_count = str(vote_count)
         self.score = score
         self.actors = self.listcover(actors)
         self.is_watched = is_watched
