@@ -29,9 +29,10 @@ class MovieSpider():
         comments = page.xpath('//*[@id="hot-comments"]/div')
         for comment in comments:
             author = comment.xpath('.//div/h3/span[2]/a/text()')[0].replace('\n','').split()
-            data = comment.xpath('.//div/h3/span[2]/span[3]/text()')[0].replace('\n','').split()
+
+            create_time = comment.xpath('.//div/h3/span[2]/span[3]/text()')[0].replace('\n','').split()
             comment_info = comment.xpath('.//div/p/span/text()')[0].replace('\n','').split()
-            comm = CommentInfo(movie_id=self.movieid, author=author, date=data, comment_info=comment_info)
+            comm = CommentInfo(movie_id=self.movieid, author=author, create_time=create_time, comment_info=comment_info)
             self.comments.append(comm)
             print(comm.__dict__)
         len(self.comments)

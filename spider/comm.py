@@ -2,9 +2,12 @@
 import os
 import time
 import requests
+import random
 
 from spider.header import header
 from log import log
+from models import User
+from exts import db
 
 # 爬虫环境参赛设置
 class glob_value():
@@ -42,5 +45,11 @@ def img_down(cover_url):
         for chunk in r.iter_content(1024):
             f.write(chunk)
 
+
+
+
+
+
 if __name__ == '__main__':
-    img_down('https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2206737207.webp')
+    # img_down('https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2206737207.webp')
+    pass

@@ -8,8 +8,9 @@ from sqlalchemy import or_
 import config
 from models import User,MovieList
 from exts import db
-from comfun import movie_pic,actors_short
+from comfun import movie_pic,actors_short,create_phone
 from log import log
+
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -23,6 +24,8 @@ def index():
     }
     return render_template('index.html',**context,fun=movie_pic,fun2=actors_short)
 
+
+# 电影信息页面
 @app.route('/info/<movie_id>/')
 def info(movie_id):
 
@@ -75,9 +78,9 @@ def regist():
                 # 如果注册成功，就让页面跳转到登录的页面
                 return redirect(url_for('login'))
 
-@app.route('/question')
-def question():
-    return 'question'
+# @app.route('/question')
+# def question():
+#     return 'question'
 
 @app.route('/search')
 def search():
@@ -85,32 +88,51 @@ def search():
 
 @app.route('/logout/')
 def logout():
-    # session.pop('user_id')
-    # del session['user_id']
+    session.pop('user_id')
+    del session['user_id']
     session.clear()
     return redirect(url_for('login'))
 
 # before_request -> 视图函数 -> context_processor
 
+# 更新电影信息
 @app.route('/addmovie/')
 def addmovie():
-
     with open('temp/movielist.txt','r',encoding='utf8') as f:
         movie_list = f.read()
 
     movies = json.loads(movie_list)
     for movie in movies:
-        # print(movie['cover_url'].split('/')[-1])
         movie_info = MovieList.query.filter(MovieList.id == movie.get('id','')).first()
         if not movie_info:
-            movie_list = MovieList(**movie)
-            db.session.add(movie_list)
+            movielist = MovieList(**movie)
+            db.session.add(movielist)
             db.session.commit()
             log.info('%s :该影片已保存到数据库。' % movie.get('title', ''))
         else:
             log.info('%s :该影片已有，不需要更新。' % movie.get('title',''))
 
-    return 'a'
+    return  redirect(url_for('index'))
+
+
+# 根据用户名，创建用户，并返回用户ID
+@app.route('/create/<username>')
+def create_user(username):
+
+    user = User.query.filter(User.username == username).first()
+    if user:
+        return str(user.id)
+    else:
+        print('else')
+        telephone = create_phone()
+        username = username
+        password = '111'
+        user = User(telephone=telephone,username=username,password=password)
+        db.session.add(user)
+        db.session.commit()
+        log.info('%s： 用户已经创建' % username)
+        user = User.query.filter(User.username == username).first()
+        return str(user.id)
 
 
 if __name__ == '__main__':

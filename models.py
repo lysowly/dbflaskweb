@@ -27,26 +27,27 @@ class User(db.Model):
         return result
 
 
-class MovieList(db.Model):
-    '''
-    rating:['9.6', '50'];
-    rank:1;
-    cover_url:https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2354179225.webp;
-    is_playable:False;
-    id:5133063;
-    types:['喜剧'];
-    regions:['英国'];
-    title:憨豆先生精选辑;
-    url:https://movie.douban.com/subject/5133063/;
-    release_date:1997;
-    actor_count:8;
-    vote_count:3554;
-    score:9.6;
-    actors:['罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'];
-    is_watched:False;
-    '''
-    __tablename__ = 'movielist'
+class CommentInfo(db.Model):
 
+    __tablename__ = 'commentinfo'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    movie_id = db.Column(db.String(20),nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    comment_info = db.Column(db.String(100),nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+
+
+    def __init__(self,*args,**kwargs):
+        self.movie_id = kwargs.get('movie_id')
+        self.author = kwargs.get('author')
+        self.create_time = kwargs.get('create_time')
+        self.comment_info = kwargs.get('comment_info')
+
+
+class MovieList(db.Model):
+
+    __tablename__ = 'movielist'
     rating = db.Column(db.String(100), nullable=False)
     rank = db.Column(db.Integer, nullable=False)
     cover_url = db.Column(db.String(100), nullable=False)
@@ -65,7 +66,6 @@ class MovieList(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
 
     def __init__(self,*args,**kwargs):
-
         rating = kwargs.get('rating')
         rank = kwargs.get('rank')
         cover_url = kwargs.get('cover_url')
