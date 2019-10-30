@@ -27,22 +27,6 @@ class User(db.Model):
         return result
 
 
-class CommentInfo(db.Model):
-
-    __tablename__ = 'commentinfo'
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    movie_id = db.Column(db.String(20),nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    comment_info = db.Column(db.String(100),nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now)
-
-
-
-    def __init__(self,*args,**kwargs):
-        self.movie_id = kwargs.get('movie_id')
-        self.author = kwargs.get('author')
-        self.create_time = kwargs.get('create_time')
-        self.comment_info = kwargs.get('comment_info')
 
 
 class MovieList(db.Model):
@@ -64,6 +48,7 @@ class MovieList(db.Model):
     actors = db.Column(db.String(1500),nullable=False)
     is_watched = db.Column(db.Boolean,nullable=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
+    related_info = db.Column(db.String(5000),nullable=True)
 
     def __init__(self,*args,**kwargs):
         rating = kwargs.get('rating')
@@ -107,6 +92,25 @@ class MovieList(db.Model):
     # 将字符串转换为列表字段，默认使用逗号分割
     def coverlist(self,strlist,split_mk=','):
         return list(strlist.split(split_mk))
+
+
+class CommentInfo(db.Model):
+    __tablename__ = 'commentinfo'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    comment_info = db.Column(db.String(2000), nullable=False)
+    create_time = db.Column(db.DateTime, default=datetime.now)
+
+    movie_id = db.Column(db.String(50), db.ForeignKey('movielist.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    author = db.relationship('User', backref=db.backref('commentinfo'))
+
+    def __init__(self, *args, **kwargs):
+        self.movie_id = kwargs.get('movie_id')
+        self.author_id = kwargs.get('author_id')
+
+        # self.create_time = kwargs.get('create_time')
+        self.comment_info = kwargs.get('comment_info')
 
 
 if __name__ == '__main__':
