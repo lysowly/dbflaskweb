@@ -3,24 +3,18 @@
 import json
 
 from flask import Flask,render_template,request,redirect,url_for,session,g
-from models import User,MovieList
-from exts import db
 from sqlalchemy import or_
 
 import config
+from models import User,MovieList
+from exts import db
+from comfun import movie_pic,actors_short
+from log import log
 
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
 
-def movie_pic(url):
-    return 'movieimages/{}'.format(url.split('/')[-1])
-
-def actors_short(actor,num=8,sp='  '):
-    actors = actor.split(',')
-    if len(actors) > num :
-        return sp.join(actors[0:num])+'......'
-    return sp.join(actors)
 
 @app.route('/')
 def index():
@@ -29,6 +23,10 @@ def index():
     }
     return render_template('index.html',**context,fun=movie_pic,fun2=actors_short)
 
+@app.route('/info/<movie_id>/')
+def info(movie_id):
+
+    return movie_id
 
 # # 第一种最简单
 # db.session.query(User).order_by('id desc').all()
@@ -96,40 +94,22 @@ def logout():
 
 @app.route('/addmovie/')
 def addmovie():
-    hdxs = {
-    'rating':['9.6', '50'],
-    'rank':1,
-    'cover_url':'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2354179225.webp',
-    'is_playable':False,
-    'id':5133063,
-    'types':['喜剧'],
-    'regions':['英国'],
-    'title':'憨豆先生精选辑',
-    'url':'https://movie.douban.com/subject/5133063/',
-    'release_date':'1997',
-    'actor_count':8,
-    'vote_count':3554,
-    'score':9.6,
-    'actors':['罗温·艾金森', 'Paul Bown', '理查德·布赖尔斯', 'Angus Deayton', '罗宾·德里斯科尔', '卡罗琳·昆汀', 'Rudolph Walker', '理查德·威尔逊'],
-    'is_watched':False
-    }
+
     with open('temp/movielist.txt','r',encoding='utf8') as f:
         movie_list = f.read()
 
     movies = json.loads(movie_list)
     for movie in movies:
-        print(movie['cover_url'].split('/')[-1])
-        # movie_list = MovieList(**movie)
-        # db.session.add(movie_list)
-        # db.session.commit()
-        # print(movie_list.__dict__)
+        # print(movie['cover_url'].split('/')[-1])
+        movie_info = MovieList.query.filter(MovieList.id == movie.get('id','')).first()
+        if not movie_info:
+            movie_list = MovieList(**movie)
+            db.session.add(movie_list)
+            db.session.commit()
+            log.info('%s :该影片已保存到数据库。' % movie.get('title', ''))
+        else:
+            log.info('%s :该影片已有，不需要更新。' % movie.get('title',''))
 
-
-
-
-    # movielist01 = MovieList(**hdxs)
-    # db.session.add(movielist01)
-    # db.session.commit()
     return 'a'
 
 
