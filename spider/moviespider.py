@@ -6,8 +6,7 @@ import json
 import lxml
 from lxml import html
 from spider.getpagebase import get_page_base
-from spider.movieinfo import MovieInfo
-from spider.comment import CommentInfo
+
 
 
 
@@ -18,7 +17,7 @@ class MovieSpider():
         self.url = 'https://movie.douban.com/subject/%s/' % self.movieid
         self.related_info = ''
         self.comments = []
-        print(self.__dict__)
+        # print(self.__dict__)
 
     def get_movie_info(self):
         resp = get_page_base(url=self.url)

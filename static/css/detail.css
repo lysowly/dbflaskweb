@@ -1,23 +1,49 @@
 .main{
-    padding: 20px;
+    padding:20px;
 }
 
 li {
     list-style-type: none;
 }
 
+ul {
+    margin-bottom: 0px;
+}
+.avatar-group{
+    width: 200px;
+    margin: auto;
+}
+
 .question-info{
     text-align: center;
 }
 
+.movie-content{
+    width:600px;
+    margin: auto;
+
+}
+
 .comment-group-title{
+    width:600px;
     margin-top: 20px;
+    margin:auto;
 }
 
 .form-container{
-    width: 500px;
+    width: 600px;
     margin-top: 10px;
     text-align: right;
+    margin:auto;
+}
+
+.coment-title{
+    font:italic bold 18px/28px arial,sans-serif;
+    font-family: "黑体" "Microsoft YaHei";
+}
+.coment-coment{
+    font: 14px/24px arial,sans-serif;
+    font-family:"仿宋" STXihei;
 }
 
 .comment-group li{

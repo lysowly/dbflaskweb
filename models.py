@@ -66,6 +66,7 @@ class MovieList(db.Model):
         score = kwargs.get('score')
         actors = kwargs.get('actors')
         is_watched = kwargs.get('is_watched')
+        related_info = kwargs.get('related_info')
 
 
         self.rating = self.listcover(rating)
@@ -83,6 +84,7 @@ class MovieList(db.Model):
         self.score = score
         self.actors = self.listcover(actors)
         self.is_watched = is_watched
+        self.related_info = related_info
 
     # 将列表字段转换为字符串，默认使用逗号分割
     def listcover(self,list_column,split_mk=','):
@@ -104,11 +106,11 @@ class CommentInfo(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     author = db.relationship('User', backref=db.backref('commentinfo'))
+    movie = db.relationship('MovieList', backref=db.backref('commentinfo'))
 
     def __init__(self, *args, **kwargs):
         self.movie_id = kwargs.get('movie_id')
         self.author_id = kwargs.get('author_id')
-
         # self.create_time = kwargs.get('create_time')
         self.comment_info = kwargs.get('comment_info')
 

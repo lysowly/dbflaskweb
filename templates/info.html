@@ -3,43 +3,47 @@
 {% block title %}首页{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
 {% endblock %}
 
 {% block main %}
+    <h3 class="page-title">{{ movie.title }}</h3>
+    <p class="question-info">
+        <span>{{ movie.regions}}</span>
+        <span>{{ movie.types | replace(',','/') }}</span>
+        <span>{{ movie.release_date }}</span>
+        <span class="movie-author">豆瓣评分：{{ movie.score }}分</span>
+    </p>
+    <hr>
+    <div class="avatar-group" >
+        <img src="{{ url_for('static',filename = fun(movie.cover_url) ) }}" alt="" >
+    </div>
+    <hr>
     <ul class="movie-list-group">
             <li>
-                <div class="avatar-group">
-                    <img src="{{ url_for('static',filename = fun(movie.cover_url) ) }}" alt="" class="avatar">
-                </div>
                 <div class="movie-group">
-                    <div class="movie-title-rank">
-                        <span class="movie-title"><a href="{{ movie.url }}">{{ movie.title}}</a></span>
-                        <span class="rank-num">{{ movie.rank }}</span>
-                    </div>
                     <div class="movie-content">
-                         <p class="movie-content-info">
-                            <p>
-                                <span>{{ movie.regions}}</span>
-                                <span>{{ movie.types }}</span>
-                                <span>{{ movie.release_date }}</span>
-                            </p>
-                            <span>主要演员：{{ movie.actors }}</span>
-                            <span></span>
-                        </p>
+                             {% if movie.related_info %}
+                                <p ><span class="coment-title">电影简介：</span><span class="coment-coment">{{ movie.related_info | replace('[','') | replace(']','') |replace('"','') }}</span></p>
+                             {% else %}
+                                <p ><span class="coment-title">电影简介：</span><span class="coment-coment">该电影还没有剧情介绍。。。。。。</span></p>
+                             {% endif %}
+
+                        <p><span class="coment-title">主要演员：</span><span  class="coment-coment">{{ movie.actors }}</span></p>
                     </div>
                     <div class="movie-info">
-                        <span class="movie-author">{{ movie.score }}分</span>
-                        <span class="movie-time">{{ movie.vote_count}}人评价</span>
+
                     </div>
                 </div>
             </li>
     </ul>
 
     <hr>
-    <h4 class="comment-group-title">评论（{{ commentinfos |length }}）：</h4>
-    <form action="#" method="post">
+    <div class="comment-group-title">
+        <h4 >评论（{{ commentinfos |length }}）：</h4>
+    </div>
+
+    <form action="{{ url_for('add_comment') }}" method="post">
         <input type="hidden" name="movie_id" value="{{ movie.id }}">
         <div class="form-container">
             <div class="form-group">
@@ -55,10 +59,10 @@
             <li>
                 <div class="user-info">
                     <img class="avatar" src="{{ url_for('static',filename='images/zhiliao.png') }}" alt="">
-                    <span class="username">{{ commentinfo.author.username }}</span>
+                    <span class="username">{{ commentinfo.author.username | replace('[','') | replace(']','') |replace('"','') }}</span>
                     <span class="create-time">{{ commentinfo.create_time }}</span>
                 </div>
-                <p class="comment-content">{{ commentinfo.comment_info }}</p>
+                <p class="comment-content">{{ commentinfo.comment_info | replace('[','') | replace(']','') |replace('"','') }}</p>
             </li>
         {% endfor %}
     </ul>
