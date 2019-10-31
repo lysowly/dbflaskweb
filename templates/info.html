@@ -58,7 +58,7 @@
         {% for commentinfo in commentinfos %}
             <li>
                 <div class="user-info">
-                    <img class="avatar" src="{{ url_for('static',filename='images/zhiliao.png') }}" alt="">
+                    <img class="avatar" src="{{ url_for('static',filename='images/timg.jpeg') }}" alt="">
                     <span class="username">{{ commentinfo.author.username | replace('[','') | replace(']','') |replace('"','') }}</span>
                     <span class="create-time">{{ commentinfo.create_time }}</span>
                 </div>
