@@ -27,6 +27,24 @@ def index():
     return render_template('index.html',**context,fun=movie_pic,fun2=actors_short,get_movie_id=get_movie_id)
 
 
+# 分页
+@app.route('/page/')
+def page():
+
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 20))
+
+    # paginate = Student.query.order_by('-s_id').paginate(page, per_page, error_out=False)
+    movielist =  MovieList.query.order_by(MovieList.rank.asc()).paginate(page, per_page, error_out=False)
+    # MovieList.query.order_by(MovieList.rank.asc()).all()
+    context = {
+        'movies': movielist.items,
+        'fun' : movie_pic,
+        'fun2' : actors_short,
+        'get_movie_id' : get_movie_id,
+    }
+    print(context)
+    return render_template('page.html',**context)
 
 # 电影信息页面
 @app.route('/info/<movie_id>/')

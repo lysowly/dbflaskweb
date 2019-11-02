@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}首页{% endblock %}
+{% block title %}第XX页{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
@@ -15,7 +15,7 @@
                     </div>
                     <div class="movie-group">
                         <div class="movie-title-rank">
-                            <span class="movie-title"><a href="{{ url_for('info',movie_id=movie.id) }}">{{ movie.title}}</a></span>
+                            <span class="movie-title"><a href="{{ url_for('info',movie_id=get_movie_id(movie.url)) }}">{{ movie.title}}</a></span>
                             <span class="rank-num">{{ movie.rank }}</span>
                         </div>
                         <div class="movie-content">
