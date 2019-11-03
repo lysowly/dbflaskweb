@@ -12,39 +12,54 @@ from comfun import movie_pic,actors_short,create_phone,get_movie_id
 from log import log
 from comfun import update_movieinfo
 from decorators import login_required
+from setting import PER_PAGE
 
 # 创建flask应用，以及配置文件，并初始化
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
 
-# 主页
-@app.route('/')
+# 主页-未分页
+# @app.route('/')
+# def index():
+#     context = {
+#         'movies': MovieList.query.order_by(MovieList.rank.asc()).all(),
+#         'fun': movie_pic,
+#         'fun2': actors_short,
+#         'get_movie_id': get_movie_id
+#     }
+#     return render_template('index.html',**context)
+
+
+# 主页 ，分页显示，包括查询结果分页显示
+@app.route('/',methods=['GET','POST'])
 def index():
-    context = {
-        'movies': MovieList.query.order_by(MovieList.rank.asc()).all()
-    }
-    return render_template('index.html',**context,fun=movie_pic,fun2=actors_short,get_movie_id=get_movie_id)
-
-
-# 分页
-@app.route('/page/')
-def page():
-
+    # 获取页码
     page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 20))
+    # 获取每页条目数量，从配置文件获取
+    per_page = PER_PAGE
+    # 获取搜索关键字
+    query = request.args.get('search')
 
-    # paginate = Student.query.order_by('-s_id').paginate(page, per_page, error_out=False)
-    movielist =  MovieList.query.order_by(MovieList.rank.asc()).paginate(page, per_page, error_out=False)
-    # MovieList.query.order_by(MovieList.rank.asc()).all()
+    # 判断是否有搜索关键字，如有则执行搜索
+    if query:
+        query = query.strip()
+        condition = or_(MovieList.title.contains(query), MovieList.related_info.contains(query))
+        pagination = MovieList.query.filter(condition).order_by(MovieList.rank.asc()).paginate(page, per_page, error_out=False)
+
+    else:
+        pagination =  MovieList.query.order_by(MovieList.rank.asc()).paginate(page, per_page, error_out=False)
     context = {
-        'movies': movielist.items,
+        'movies': pagination.items,
         'fun' : movie_pic,
         'fun2' : actors_short,
         'get_movie_id' : get_movie_id,
+        'pagination':pagination,
+        'query':query
     }
-    print(context)
+
     return render_template('page.html',**context)
+
 
 # 电影信息页面
 @app.route('/info/<movie_id>/')
@@ -118,17 +133,17 @@ def add_comment():
     return redirect(url_for('info',movie_id=movie_id))
 
 
-# 查找电影
-@app.route('/search')
-def search():
-    q = request.args.get('search').split()
-    if q:
-        query=q[0]
-        condition = or_(MovieList.title.contains(query), MovieList.related_info.contains(query))
-        movies = MovieList.query.filter(condition).order_by('rank')
-        return render_template('index.html', movies=movies, fun=movie_pic, fun2=actors_short, get_movie_id=get_movie_id)
-    else:
-        return  render_template('err.html',err_info='查询内容不能为空')
+# 查找电影 --已经整合到主页中
+# @app.route('/search')
+# def search():
+#     q = request.args.get('search').split()
+#     if q:
+#         query=q[0]
+#         condition = or_(MovieList.title.contains(query), MovieList.related_info.contains(query))
+#         movies = MovieList.query.filter(condition).order_by('rank')
+#         return render_template('index.html', movies=movies, fun=movie_pic, fun2=actors_short, get_movie_id=get_movie_id)
+#     else:
+#         return  render_template('err.html',err_info='查询内容不能为空')
 
 
 # 用户注销登录

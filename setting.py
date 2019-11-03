@@ -21,3 +21,6 @@ LOG_PATH_SETING = 'log'
 # 文档保存目录
 # BASE_PATH = 1
 # FILE_PATH =2
+
+# 分页，每页的数量设置
+PER_PAGE = 8

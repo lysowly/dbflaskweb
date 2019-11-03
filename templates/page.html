@@ -1,40 +1,49 @@
+
+{% import "_macros.html" as macros %}
+
 {% extends 'base.html' %}
 
-{% block title %}第XX页{% endblock %}
+{% block title %}{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
 {% endblock %}
 
 {% block main %}
-        <ul class="movie-list-group">
-            {% for movie in movies %}
-                <li>
-                    <div class="avatar-group">
-                        <img src="{{ url_for('static',filename = fun(movie.cover_url) ) }}" alt="" class="avatar">
+    <ul class="movie-list-group">
+        {% for movie in movies %}
+            <li>
+                <div class="avatar-group">
+                    <img src="{{ url_for('static',filename = fun(movie.cover_url) ) }}" alt="" class="avatar">
+                </div>
+                <div class="movie-group">
+                    <div class="movie-title-rank">
+                        <span class="movie-title"><a href="{{ url_for('info',movie_id=get_movie_id(movie.url)) }}">{{ movie.title}}</a></span>
+                        <span class="rank-num">{{ movie.rank }}</span>
                     </div>
-                    <div class="movie-group">
-                        <div class="movie-title-rank">
-                            <span class="movie-title"><a href="{{ url_for('info',movie_id=get_movie_id(movie.url)) }}">{{ movie.title}}</a></span>
-                            <span class="rank-num">{{ movie.rank }}</span>
-                        </div>
-                        <div class="movie-content">
-                             <p class="movie-content-info">
-                                <p>
-                                    <span>{{ movie.regions}}</span>
-                                    <span>{{ movie.types }}</span>
-                                    <span>{{ movie.release_date }}</span>
-                                </p>
-                                <span>主要演员：{{ fun2(movie.actors) }}</span>
-                                <span></span>
+                    <div class="movie-content">
+                         <p class="movie-content-info">
+                            <p>
+                                <span>{{ movie.regions}}</span>
+                                <span>{{ movie.types }}</span>
+                                <span>{{ movie.release_date }}</span>
                             </p>
-                        </div>
-                        <div class="movie-info">
-                            <span class="movie-author">{{ movie.score }}分</span>
-                            <span class="movie-time">{{ movie.vote_count}}人评价</span>
-                        </div>
+                            <span>主要演员：{{ fun2(movie.actors) }}</span>
+                            <span></span>
+                        </p>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
+                    <div class="movie-info">
+                        <span class="movie-author">{{ movie.score }}分</span>
+                        <span class="movie-time">{{ movie.vote_count}}人评价</span>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {%if pagination%}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.index',search=query) }}
+    </div>
+{% endif %}
 {% endblock %}

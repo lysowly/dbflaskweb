@@ -63,3 +63,7 @@ ul.movie-list-group li{
 .movie-info .movie-author{
     margin-right:20px;
 }
+
+.pagination{
+    text-align: center;
+}
